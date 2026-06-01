@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Emily Aumiller — Portfolio</title>
+
+  <!-- Google Fonts: Cormorant Garamond (display) + Jost (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Design Tokens ─────────────────────────────── */
+    :root {
+      --bg:        #F8F6F2;
+      --surface:   #FFFFFF;
+      --text:      #1A1A1A;
+      --muted:     #7A7267;
+      --accent:    #B07855;
+      --border:    #E2DDD7;
+      --radius:    6px;
+      --max-w:     760px;
+      --transition: 0.25s ease;
+    }
+
+    /* ── Reset & Base ──────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.75;
+      min-height: 100vh;
+    }
+
+    /* ── Layout ────────────────────────────────────── */
+    .wrapper {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ── Header ────────────────────────────────────── */
+    header {
+      padding: 56px 0 40px;
+      border-bottom: 1px solid var(--border);
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.1s forwards;
+    }
+
+    header .wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .site-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 5vw, 3rem);
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      line-height: 1.1;
+      color: var(--text);
+    }
+
+    .site-tagline {
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* ── Navigation Tabs ───────────────────────────── */
+    nav {
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background-color: var(--bg);
+      z-index: 10;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 0.25s forwards;
+    }
+
+    nav .wrapper {
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    nav .wrapper::-webkit-scrollbar { display: none; }
+
+    nav button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 18px 20px;
+      position: relative;
+      transition: color var(--transition);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    nav button::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 20px;
+      right: 20px;
+      height: 1.5px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transition: transform var(--transition);
+    }
+
+    nav button:hover { color: var(--text); }
+
+    nav button.active {
+      color: var(--text);
+    }
+
+    nav button.active::after {
+      transform: scaleX(1);
+    }
+
+    /* ── Main Content ──────────────────────────────── */
+    main {
+      padding: 56px 0 80px;
+    }
+
+    .tab-panel {
+      display: none;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity var(--transition), transform var(--transition);
+    }
+
+    .tab-panel.active {
+      display: block;
+      animation: tabIn 0.3s ease forwards;
+    }
+
+    /* ── About (Home) ──────────────────────────────── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 140px;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .about-text h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.85rem;
+      font-weight: 400;
+      line-height: 1.25;
+      margin-bottom: 20px;
+    }
+
+    .about-text p {
+      color: var(--muted);
+      margin-bottom: 16px;
+      font-size: 0.97rem;
+    }
+
+    .about-text p:last-child { margin-bottom: 0; }
+
+    /* replace this div with an <img> tag pointing to your photo */
+    .avatar-placeholder {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: var(--muted);
+      text-align: center;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* ── Section Headings ──────────────────────────── */
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 32px;
+    }
+
+    /* ── Projects ──────────────────────────────────── */
+    .projects-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+
+    .project-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 2px 16px rgba(176, 120, 85, 0.07);
+    }
+
+    .project-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .project-card .project-meta {
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+
+    .project-card p {
+      font-size: 0.93rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .project-card .project-links {
+      margin-top: 16px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .project-card .project-links a {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 2px;
+      transition: border-color var(--transition), color var(--transition);
+    }
+
+    .project-card .project-links a:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    /* ── Resume ────────────────────────────────────── */
+    .resume-section {
+      margin-bottom: 40px;
+    }
+
+    .resume-section h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 500;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+
+    .resume-entry {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px 24px;
+      margin-bottom: 20px;
+    }
+
+    .resume-entry:last-child { margin-bottom: 0; }
+
+    .entry-title {
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    .entry-org {
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    .entry-date {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-align: right;
+      white-space: nowrap;
+      padding-top: 2px;
+    }
+
+    .entry-desc {
+      grid-column: 1 / -1;
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-top: -4px;
+    }
+
+    .resume-download {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 10px 22px;
+      border: 1px solid var(--text);
+      border-radius: var(--radius);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--text);
+      transition: background var(--transition), color var(--transition);
+    }
+
+    .resume-download:hover {
+      background: var(--text);
+      color: var(--bg);
+    }
+
+    /* ── Contact ───────────────────────────────────── */
+    .contact-intro {
+      font-size: 0.97rem;
+      color: var(--muted);
+      max-width: 480px;
+      margin-bottom: 36px;
+    }
+
+    .contact-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .contact-list li {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+    }
+
+    .contact-list .contact-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      min-width: 72px;
+    }
+
+    .contact-list a {
+      font-size: 0.97rem;
+      color: var(--text);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1px;
+      transition: border-color var(--transition), color var(--transition);
+    }
+
+    .contact-list a:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    /* ── Footer ────────────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Animations ────────────────────────────────── */
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(12px); }
+    }
+
+    @keyframes tabIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Responsive ────────────────────────────────── */
+    @media (max-width: 560px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+      .avatar-placeholder {
+        width: 100px;
+        height: 100px;
+      }
+      .resume-entry {
+        grid-template-columns: 1fr;
+      }
+      .entry-date { text-align: left; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── Header ─────────────────────────────────── -->
+  <header>
+    <div class="wrapper">
+      <!-- ✏️  Replace "Your Name" with your actual name -->
+      <h1 class="site-name">Your Name</h1>
+      <!-- ✏️  Replace with your degree/title/focus -->
+      <p class="site-tagline">Information Science · UX · Cybersecurity</p>
+    </div>
+  </header>
+
+  <!-- ── Tab Navigation ─────────────────────────── -->
+  <nav>
+    <div class="wrapper">
+      <button class="active" onclick="showTab('about', this)">About</button>
+      <button onclick="showTab('projects', this)">Projects</button>
+      <button onclick="showTab('resume', this)">Resume</button>
+      <button onclick="showTab('contact', this)">Contact</button>
+    </div>
+  </nav>
+
+  <!-- ── Main ───────────────────────────────────── -->
+  <main>
+    <div class="wrapper">
+
+      <!-- ABOUT ──────────────────────────────────── -->
+      <section id="about" class="tab-panel active">
+        <div class="about-grid">
+          <div class="about-text">
+            <h2>Hi, I'm [Your Name].</h2>
+
+            <!-- ✏️  Write 2–3 short paragraphs about yourself -->
+            <p>
+              I'm a senior Information Science student at the University of Maryland,
+              graduating May 2026. My work sits at the intersection of UX strategy,
+              data analysis, and cybersecurity.
+            </p>
+            <p>
+              I've led consulting engagements, built educational tools, and developed
+              startup concepts. I care about designing experiences that are clear,
+              inclusive, and useful.
+            </p>
+            <p>
+              Currently open to full-time roles in UX research, marketing analytics,
+              or information management.
+            </p>
+          </div>
+
+          <!--
+            ✏️  To add a photo, replace this div with:
+            <img src="photo.jpg" alt="Your Name" style="width:140px;height:140px;border-radius:50%;object-fit:cover;" />
+          -->
+          <div class="avatar-placeholder">Your<br/>Photo</div>
+        </div>
+      </section>
+
+      <!-- PROJECTS ────────────────────────────────── -->
+      <section id="projects" class="tab-panel">
+        <p class="section-label">Selected Work</p>
+        <div class="projects-list">
+
+          <!-- ✏️  Project 1 — duplicate this card for more projects -->
+          <div class="project-card">
+            <p class="project-meta">Consulting · 2025</p>
+            <h3>JPC HubSpot CRM Activation</h3>
+            <p>
+              Led a full CRM audit and activation strategy for Justin Panzer Consulting,
+              a boutique B2B marketing firm. Audited 337 contacts, surfaced segmentation
+              gaps, and delivered a UX strategy report, data visualizations, and a
+              newsletter campaign framework.
+            </p>
+            <div class="project-links">
+              <!-- ✏️  Replace "#" with the actual URL or remove the link -->
+              <a href="#">View Report</a>
+              <a href="#">Presentation</a>
+            </div>
+          </div>
+
+          <!-- ✏️  Project 2 -->
+          <div class="project-card">
+            <p class="project-meta">Educational Technology · 2025</p>
+            <h3>Phish Detect</h3>
+            <p>
+              A hybrid physical-digital phishing awareness game combining an HTML/JavaScript
+              browser game with an Arduino keypad and 3D-printed components. Players
+              identify phishing tactics using a coded cheat sheet and enter answers on
+              a physical keypad.
+            </p>
+            <div class="project-links">
+              <a href="#">GitHub</a>
+              <a href="#">Demo</a>
+            </div>
+          </div>
+
+          <!-- ✏️  Project 3 -->
+          <div class="project-card">
+            <p class="project-meta">Startup Concept · 2024–2025</p>
+            <h3>ArtSee</h3>
+            <p>
+              A curated discovery platform for independent creatives across gaming,
+              music, visual arts, and film. Developed a full pitch deck, Business Model
+              Canvas, and go-to-market strategy as part of an entrepreneurship course.
+            </p>
+            <div class="project-links">
+              <a href="#">Pitch Deck</a>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- RESUME ──────────────────────────────────── -->
+      <section id="resume" class="tab-panel">
+        <p class="section-label">Experience &amp; Education</p>
+
+        <!-- Education -->
+        <div class="resume-section">
+          <h3>Education</h3>
+          <div class="resume-entry">
+            <div>
+              <div class="entry-title">B.S. Information Science</div>
+              <div class="entry-org">University of Maryland, College Park</div>
+            </div>
+            <div class="entry-date">Expected May 2026</div>
+            <!-- ✏️  Add GPA, honors, or concentrations if you'd like -->
+          </div>
+        </div>
+
+        <!-- Experience -->
+        <div class="resume-section">
+          <h3>Experience</h3>
+
+          <div class="resume-entry">
+            <div>
+              <div class="entry-title">Project Manager — iConsultancy Capstone</div>
+              <div class="entry-org">Justin Panzer Consulting (via UMD iSchool)</div>
+            </div>
+            <div class="entry-date">Jan 2025 – May 2025</div>
+            <div class="entry-desc">
+              Led a four-person consulting team on CRM activation, content strategy,
+              and outbound campaign planning for a B2B marketing firm.
+            </div>
+          </div>
+
+          <!-- ✏️  Add more experience entries as needed -->
+          <div class="resume-entry">
+            <div>
+              <div class="entry-title">LifeCafe Team Member</div>
+              <div class="entry-org">Life Time Fitness</div>
+            </div>
+            <div class="entry-date">2023 – Present</div>
+            <div class="entry-desc">
+              <!-- ✏️  Add a brief description of your role -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Skills -->
+        <div class="resume-section">
+          <h3>Skills</h3>
+          <div class="resume-entry">
+            <div class="entry-desc">
+              <!-- ✏️  List your skills, tools, and technologies -->
+              HubSpot · Excel · Canva · HTML/CSS · JavaScript · Arduino · UX Research ·
+              Project Management · NIST CSF · Data Analysis
+            </div>
+          </div>
+        </div>
+
+        <!-- Download button -->
+        <!-- ✏️  Upload your resume PDF to the repo and update the href below -->
+        <a class="resume-download" href="resume.pdf" download>↓ Download Resume (PDF)</a>
+      </section>
+
+      <!-- CONTACT ─────────────────────────────────── -->
+      <section id="contact" class="tab-panel">
+        <p class="section-label">Get In Touch</p>
+        <p class="contact-intro">
+          I'm always open to project collaborations, job opportunities, or just
+          a conversation about UX, data, or cybersecurity.
+        </p>
+
+        <ul class="contact-list">
+          <!-- ✏️  Replace placeholders with your real links -->
+          <li>
+            <span class="contact-label">Email</span>
+            <a href="mailto:you@email.com">you@email.com</a>
+          </li>
+          <li>
+            <span class="contact-label">LinkedIn</span>
+            <a href="https://linkedin.com/in/yourhandle" target="_blank">linkedin.com/in/yourhandle</a>
+          </li>
+          <li>
+            <span class="contact-label">GitHub</span>
+            <a href="https://github.com/emilyaum" target="_blank">github.com/emilyaum</a>
+          </li>
+        </ul>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ── Footer ─────────────────────────────────── -->
+  <footer>
+    <!-- ✏️  Emily Aumiller 2026 -->
+    &copy; 2026 Your Name. Built with HTML &amp; CSS.
+  </footer>
+
+  <!-- ── Tab Logic ───────────────────────────────── -->
+  <script>
+    function showTab(id, btn) {
+      // Hide all panels
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      // Deactivate all nav buttons
+      document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+      // Show selected panel + activate button
+      document.getElementById(id).classList.add('active');
+      btn.classList.add('active');
+    }
+  </script>
+
+</body>
+</html>
